@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<header>
+  <span class="logo">
+    <img src="images/logo.png" alt="logo">
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Buscar Nombre o Número">
+      <button type="submit" id="searchButton"></button>
+    </div>
+  </span>
+</header>
+<body>
+  <div class="main-container">
+    <div class="card-container" id="card-container">
+      <!-- Las tarjetas se generan aquí -->
+    </div>
+    <div class="pagination">
+      <button id="prevButton" onclick="prevPage()">Anterior</button>
+      <button id="nextButton" onclick="nextPage()">Siguiente</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
