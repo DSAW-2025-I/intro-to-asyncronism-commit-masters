@@ -3,6 +3,10 @@ const limit = 12;
 
 document.addEventListener('DOMContentLoaded', () => {
   loadPokemon(currentPage);
+  document.getElementById('searchButton').addEventListener('click', searchPokemon);
+  document.getElementById('search').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') searchPokemon();
+  });
 });
 
 function loadPokemon(page) {
@@ -90,24 +94,18 @@ function prevPage() {
   }
 }
 
-
-document.addEventListener('DOMContentLoaded', () => {
-  loadPokemon(currentPage);
-  document.getElementById('searchButton').addEventListener('click', searchPokemon);
-  document.getElementById('search').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') searchPokemon();
-  });
-});
-
 function searchPokemon() {
   const searchInput = document.getElementById('search').value.trim().toLowerCase();
-  if (!searchInput) return;
+  if (!searchInput) {
+    loadPokemon(currentPage); // Si el campo de busqueda esta vacio mostrar todos los Pokemon
+    return;
+  }
 
   fetch(`https://pokeapi.co/api/v2/pokemon/${searchInput}`)
     .then(response => {
       if (!response.ok) throw new Error('No encontrado');
       return response.json();
     })
-    .then(pokemon => displayPokemon([pokemon])) // Mostrar solo el Pokémon buscado
+    .then(pokemon => displayPokemon([pokemon])) // Mostrar solo el Pokemon buscado
     .catch(() => alert('Pokémon no encontrado. Intenta con otro nombre o número.'));
 }
