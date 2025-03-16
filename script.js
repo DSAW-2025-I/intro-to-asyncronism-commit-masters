@@ -7,6 +7,19 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('search').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') searchPokemon();
   });
+
+  const modal = document.getElementById('pokemonModal');
+  const span = document.getElementsByClassName('close')[0];
+
+  span.onclick = function() { // Cerrar la tarjeta al hacer click en la X
+    modal.style.display = 'none';
+  }
+
+  window.onclick = function(event) { // Cerrar la tarjeta al hacer click fuera de ella
+    if (event.target == modal) {
+      modal.style.display = 'none';
+    }
+  }
 });
 
 function loadPokemon(page) {
@@ -33,8 +46,8 @@ function displayPokemon(pokemons) {
         const typeColor = getTypeColor(typeName);
         return `<span class="type" style="background-color: ${typeColor};">${capitalizeFirstLetter(typeName)}</span>`;
       }).join(' ');
-      return `
-        <div class="card">
+      const card = `
+        <div class="card" onclick="showPokemonDetails(${pokemon.id})">
           <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
           <p>#${formatNumber(pokemon.id)}</p>
           <p>${capitalizeFirstLetter(pokemon.name)}</p>
@@ -42,12 +55,32 @@ function displayPokemon(pokemons) {
           <div class="type-container">${typeElements}</div>
         </div>
       `;
+      return card;
     });
   });
 
   Promise.all(promises).then(cards => {
     container.innerHTML = cards.join('');
   });
+}
+
+function showPokemonDetails(pokemonId) {
+  fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
+    .then(response => response.json())
+    .then(pokemon => {
+      const types = pokemon.types.map(typeInfo => typeInfo.type.name).join(', ');
+      const details = `
+        <p>#${formatNumber(pokemon.id)}</p>
+        <p>${capitalizeFirstLetter(pokemon.name)}</p>
+        <p>Weight: ${pokemon.weight}</p>
+        <p>Height: ${pokemon.height}</p>
+        <p>Base Experience: ${pokemon.base_experience}</p>
+        <p>Type: ${types}</p>
+      `;
+      document.getElementById('pokemonImage').src = pokemon.sprites.front_default;
+      document.getElementById('pokemonInfo').innerHTML = details;
+      document.getElementById('pokemonModal').style.display = 'block';
+    });
 }
 
 function capitalizeFirstLetter(string) {
