@@ -1,7 +1,7 @@
-let currentPage = 1;
-const limit = 12;
+let currentPage = 1; // Pagina actual
+const limit = 12; // Limite de Pokemon por pagina
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => { // Cargar la lista de Pokemon al cargar la pagina
   loadPokemon(currentPage);
   document.getElementById('searchButton').addEventListener('click', searchPokemon);
   document.getElementById('search').addEventListener('keypress', function (e) {
@@ -35,7 +35,7 @@ function loadPokemon(page) {
     });
 }
 
-function displayPokemon(pokemons) {
+function displayPokemon(pokemons) { // Mostrar los Pokemon en la pagina
   const container = document.getElementById('card-container');
   container.innerHTML = '';
   const promises = pokemons.map(pokemon => {
@@ -59,12 +59,12 @@ function displayPokemon(pokemons) {
     });
   });
 
-  Promise.all(promises).then(cards => {
+  Promise.all(promises).then(cards => { // Mostrar las tarjetas de los Pokemon
     container.innerHTML = cards.join('');
   });
 }
 
-function showPokemonDetails(pokemonId) {
+function showPokemonDetails(pokemonId) { // Mostrar los detalles de un Pokemon en una tarjeta desplagada
   fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
     .then(response => response.json())
     .then(pokemon => {
@@ -91,7 +91,7 @@ function formatNumber(number) {
   return number.toString().padStart(4, '0');
 }
 
-function getTypeColor(type) {
+function getTypeColor(type) { // Colores de los tipos de Pokemon
   const typeColors = {
     grass: '#83D66A',
     fire: '#FB8917',
@@ -127,7 +127,7 @@ function prevPage() {
   }
 }
 
-function searchPokemon() {
+function searchPokemon() { // Buscar un Pokemon en especifico
   const searchInput = document.getElementById('search').value.trim().toLowerCase();
   if (!searchInput) {
     loadPokemon(currentPage); // Si el campo de busqueda esta vacio mostrar todos los Pokemon
