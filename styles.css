@@ -156,7 +156,7 @@ body {
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background-color: #fff;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
@@ -166,6 +166,8 @@ body {
   display: flex;
   align-items: center;
   position: relative;
+  background: linear-gradient(to right, #fff 85%, var(--line-color1) 85%, var(--line-color2) 90%, #fff 90%);
+  color: black;
 }
 
 .close {
@@ -190,7 +192,7 @@ body {
 }
 
 .pokemon-details img {
-  width: 150px;
+  width: 200px;
   height: auto;
   margin-right: 20px;
 }
@@ -198,4 +200,14 @@ body {
 .pokemon-details div {
   display: flex;
   flex-direction: column;
+  margin-left: 20px;
+}
+
+.type-modal {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 5px;
+  color: white;
+  margin: 2px;
+  font-size: 12px;
 }
