@@ -89,3 +89,25 @@ function prevPage() {
     loadPokemon(currentPage);
   }
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadPokemon(currentPage);
+  document.getElementById('searchButton').addEventListener('click', searchPokemon);
+  document.getElementById('search').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') searchPokemon();
+  });
+});
+
+function searchPokemon() {
+  const searchInput = document.getElementById('search').value.trim().toLowerCase();
+  if (!searchInput) return;
+
+  fetch(`https://pokeapi.co/api/v2/pokemon/${searchInput}`)
+    .then(response => {
+      if (!response.ok) throw new Error('No encontrado');
+      return response.json();
+    })
+    .then(pokemon => displayPokemon([pokemon])) // Mostrar solo el Pokémon buscado
+    .catch(() => alert('Pokémon no encontrado. Intenta con otro nombre o número.'));
+}
