@@ -51,7 +51,7 @@ function displayPokemon(pokemons) { // Mostrar los Pokemon en la pagina
           <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
           <p>#${formatNumber(pokemon.id)}</p>
           <p>${capitalizeFirstLetter(pokemon.name)}</p>
-          <p>Weight: ${pokemon.weight}</p>
+          <p>Weight: ${pokemon.weight / 10} kg</p> <!-- Convertir el peso a kilogramos -->
           <div class="type-container">${typeElements}</div>
         </div>
       `;
@@ -64,21 +64,36 @@ function displayPokemon(pokemons) { // Mostrar los Pokemon en la pagina
   });
 }
 
-function showPokemonDetails(pokemonId) { // Mostrar los detalles de un Pokemon en una tarjeta desplagada
+function showPokemonDetails(pokemonId) { // Mostrar los detalles de un Pokemon en una tarjeta desplegable
   fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
     .then(response => response.json())
     .then(pokemon => {
-      const types = pokemon.types.map(typeInfo => typeInfo.type.name).join(', ');
+      const types = pokemon.types.map(typeInfo => {
+        const typeName = typeInfo.type.name;
+        const typeColor = getTypeColor(typeName);
+        return `<span class="type-modal" style="background-color: ${typeColor};">${capitalizeFirstLetter(typeName)}</span>`;
+      }).join(' ');
+
+      const abilities = pokemon.abilities.map(abilityInfo => {
+        return capitalizeFirstLetter(abilityInfo.ability.name);
+      }).join(', ');
+
       const details = `
         <p>#${formatNumber(pokemon.id)}</p>
         <p>${capitalizeFirstLetter(pokemon.name)}</p>
-        <p>Weight: ${pokemon.weight}</p>
-        <p>Height: ${pokemon.height}</p>
-        <p>Base Experience: ${pokemon.base_experience}</p>
+        <p>Weight: ${pokemon.weight / 10} kg</p> <!-- Convertir el peso a kilogramos -->
+        <p>Height: ${pokemon.height / 10} m</p> <!-- Convertir la altura a metros -->
+        <p>Abilities: ${abilities}</p>
         <p>Type: ${types}</p>
       `;
       document.getElementById('pokemonImage').src = pokemon.sprites.front_default;
       document.getElementById('pokemonInfo').innerHTML = details;
+
+      // Obtener los colores de los tipos para la franja de la tarjeta
+      const typeColors = pokemon.types.map(typeInfo => getTypeColor(typeInfo.type.name));
+      document.documentElement.style.setProperty('--line-color1', typeColors[0]);
+      document.documentElement.style.setProperty('--line-color2', typeColors[1] || typeColors[0]);
+
       document.getElementById('pokemonModal').style.display = 'block';
     });
 }
