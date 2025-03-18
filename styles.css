@@ -222,18 +222,18 @@ body {
 
 @media (max-width: 480px) {
   header img {
-    width: 300px; /* Ajustar el tamaño de la imagen para dispositivos móviles */
+    width: 350px; /* Ajustar el tamaño de la imagen para dispositivos móviles */
   }
 
   header .search-container input {
-    width: 300px; /* Ajustar el tamaño del input para dispositivos móviles */
-    padding: 20px; /* Aumentar el padding del input */
-    font-size: 20px; /* Aumentar el tamaño de la fuente del input */
+    width: 350px; /* Ajustar el tamaño del input para dispositivos móviles */
+    padding: 25px; /* Aumentar el padding del input */
+    font-size: 24px; /* Aumentar el tamaño de la fuente del input */
   }
 
   header .search-container button {
-    width: 60px; /* Ajustar el tamaño del botón para dispositivos móviles */
-    height: 60px;
+    width: 70px; /* Ajustar el tamaño del botón para dispositivos móviles */
+    height: 70px;
   }
 
   .card-container {
