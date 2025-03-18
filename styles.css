@@ -222,16 +222,18 @@ body {
 
 @media (max-width: 480px) {
   header img {
-    width: 150px; /* Ajustar el tamaño de la imagen para dispositivos móviles */
+    width: 250px; /* Ajustar el tamaño de la imagen para dispositivos móviles */
   }
 
   header .search-container input {
-    width: 150px; /* Ajustar el tamaño del input para dispositivos móviles */
+    width: 250px; /* Ajustar el tamaño del input para dispositivos móviles */
+    padding: 15px; /* Aumentar el padding del input */
+    font-size: 18px; /* Aumentar el tamaño de la fuente del input */
   }
 
   header .search-container button {
-    width: 25px; /* Ajustar el tamaño del botón para dispositivos móviles */
-    height: 25px;
+    width: 50px; /* Ajustar el tamaño del botón para dispositivos móviles */
+    height: 50px;
   }
 
   .card-container {
