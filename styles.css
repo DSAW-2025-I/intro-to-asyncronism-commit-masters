@@ -19,7 +19,7 @@ header {
 }
 
 header img {
-  width: 302px;
+  width: 200px; /* Ajustar el tamaño de la imagen para dispositivos móviles */
   height: auto;
 }
 
@@ -32,7 +32,7 @@ header .search-container {
 }
 
 header .search-container input {
-  width: 280px;
+  width: 200px; /* Ajustar el tamaño del input para dispositivos móviles */
   padding: 10px;
   border-radius: 0px 20px 20px 0px;
   border: 1px solid #ccc;
@@ -40,8 +40,8 @@ header .search-container input {
 }
 
 header .search-container button {
-  width: 40px;
-  height: 40px; 
+  width: 30px; /* Ajustar el tamaño del botón para dispositivos móviles */
+  height: 30px; 
   border-radius: 50%;
   border: 1px solid #ccc;
   margin-left: 10px;
@@ -70,6 +70,8 @@ body {
   background: rgb(255, 255, 255);
   border-radius: 10px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  width: 90%; /* Ajustar el ancho del contenedor principal */
+  max-width: 1200px; /* Ancho máximo para pantallas grandes */
 }
 
 .card-container {
@@ -78,6 +80,7 @@ body {
   grid-template-rows: repeat(3, auto);
   gap: 15px;
   border-radius: 10px;
+  width: 100%; /* Ajustar el ancho del contenedor de tarjetas */
 }
 
 .card {
@@ -85,8 +88,8 @@ body {
   padding: 10px;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 175px;
-  height: 200px;
+  width: 100%; /* Ajustar el ancho de la tarjeta */
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -141,9 +144,8 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-
 .modal {
-  display: none;
+  display: none; /* Ocultar el modal por defecto */
   position: fixed;
   z-index: 1;
   left: 0;
@@ -156,7 +158,7 @@ body {
 }
 
 .modal-content {
-  background-color: #fff;
+  background-color: #fff; /* Fondo blanco */
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
@@ -165,15 +167,15 @@ body {
   border-radius: 10px;
   display: flex;
   align-items: center;
-  position: relative;
+  position: relative; /* Añadir posición relativa para el contenido del modal */
   background: linear-gradient(to right, #fff 85%, var(--line-color1) 85%, var(--line-color2) 90%, #fff 90%);
-  color: black;
+  color: black; /* Hacer el texto negro */
 }
 
 .close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: absolute; /* Posicionar el botón de cierre de forma absoluta */
+  top: 10px; /* Ajustar la posición superior */
+  right: 10px; /* Ajustar la posición derecha */
   color: #aaa;
   font-size: 28px;
   font-weight: bold;
@@ -192,7 +194,7 @@ body {
 }
 
 .pokemon-details img {
-  width: 200px;
+  width: 200px; /* Hacer la imagen del Pokémon más grande */
   height: auto;
   margin-right: 20px;
 }
@@ -200,7 +202,7 @@ body {
 .pokemon-details div {
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
+  margin-left: 20px; /* Mover la información del Pokémon más a la derecha */
 }
 
 .type-modal {
@@ -210,4 +212,68 @@ body {
   color: white;
   margin: 2px;
   font-size: 12px;
+}
+
+.evolution-stage {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.evolution-stage span {
+  width: 10px;
+  height: 10px;
+  background-color: var(--line-color1); /* Cambiar el color a la variable de la franja */
+  margin-right: 5px;
+  border-radius: 2px;
+}
+
+/* Media queries para hacer la página responsive */
+@media (max-width: 1200px) {
+  .card-container {
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas para pantallas medianas */
+  }
+}
+
+@media (max-width: 768px) {
+  .card-container {
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas para pantallas pequeñas */
+  }
+}
+
+@media (max-width: 480px) {
+  header img {
+    width: 150px; /* Ajustar el tamaño de la imagen para dispositivos móviles */
+  }
+
+  header .search-container input {
+    width: 150px; /* Ajustar el tamaño del input para dispositivos móviles */
+  }
+
+  header .search-container button {
+    width: 25px; /* Ajustar el tamaño del botón para dispositivos móviles */
+    height: 25px;
+  }
+
+  .card-container {
+    grid-template-columns: 1fr; /* Una columna para dispositivos móviles */
+    grid-template-rows: repeat(3, auto); /* Tres filas para dispositivos móviles */
+  }
+
+  .card {
+    width: 100%; /* Ajustar el ancho de la tarjeta para dispositivos móviles */
+    height: auto; /* Ajustar la altura de la tarjeta para dispositivos móviles */
+  }
+
+  .card img {
+    width: 80px; /* Ajustar el tamaño de la imagen de la tarjeta para dispositivos móviles */
+  }
+
+  .card p {
+    font-size: 14px; /* Ajustar el tamaño de la fuente para dispositivos móviles */
+  }
+
+  .type {
+    font-size: 10px; /* Ajustar el tamaño de la fuente para dispositivos móviles */
+  }
 }
