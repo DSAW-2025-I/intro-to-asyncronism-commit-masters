@@ -1,21 +1,23 @@
-let currentPage = 1; // Pagina actual
-const limit = 12; // Limite de Pokemon por pagina
+let currentPage = 1;
 
-document.addEventListener('DOMContentLoaded', () => { // Cargar la lista de Pokemon al cargar la pagina
+document.addEventListener('DOMContentLoaded', () => {
   loadPokemon(currentPage);
   document.getElementById('searchButton').addEventListener('click', searchPokemon);
   document.getElementById('search').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') searchPokemon();
   });
 
+  // Obtener el modal
   const modal = document.getElementById('pokemonModal');
   const span = document.getElementsByClassName('close')[0];
 
-  span.onclick = function() { // Cerrar la tarjeta al hacer click en la X
+  // Cuando el usuario hace clic en <span> (x), cerrar el modal
+  span.onclick = function() {
     modal.style.display = 'none';
   }
 
-  window.onclick = function(event) { // Cerrar la tarjeta al hacer click fuera de ella
+  // Cuando el usuario hace clic en cualquier lugar fuera del modal, cerrarlo
+  window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = 'none';
     }
@@ -23,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => { // Cargar la lista de Poke
 });
 
 function loadPokemon(page) {
+  const limit = getLimit();
   const offset = (page - 1) * limit;
   fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`) // Endpoint 1: Obtener la lista de Pokemon
     .then(response => response.json())
@@ -35,7 +38,15 @@ function loadPokemon(page) {
     });
 }
 
-function displayPokemon(pokemons) { // Mostrar los Pokemon en la pagina
+function getLimit() {
+  const width = window.innerWidth;
+  if (width <= 480) return 3;
+  if (width <= 768) return 6;
+  if (width <= 1200) return 9;
+  return 12;
+}
+
+function displayPokemon(pokemons) {
   const container = document.getElementById('card-container');
   container.innerHTML = '';
   const promises = pokemons.map(pokemon => {
