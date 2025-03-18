@@ -1,7 +1,5 @@
-let currentPage = 1;
-
 document.addEventListener('DOMContentLoaded', () => {
-  loadPokemon(currentPage);
+  loadAllPokemon();
   document.getElementById('searchButton').addEventListener('click', searchPokemon);
   document.getElementById('search').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') searchPokemon();
@@ -24,13 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-function loadPokemon(page) {
-  const limit = getLimit();
-  const offset = (page - 1) * limit;
-  fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`) // Endpoint 1: Obtener la lista de Pokemon
+function loadAllPokemon() {
+  fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`) // Obtener todos los Pokémon (ajusta el límite según sea necesario)
     .then(response => response.json())
     .then(data => {
-      const promises = data.results.map(pokemon => fetch(pokemon.url).then(res => res.json())); // Endpoint 2: Obtener detalles de un Pokemon en especifico
+      const promises = data.results.map(pokemon => fetch(pokemon.url).then(res => res.json())); // Obtener detalles de cada Pokémon
       Promise.all(promises).then(results => {
         results.sort((a, b) => a.id - b.id); // Ordenar los resultados por ID
         displayPokemon(results);
@@ -38,19 +34,11 @@ function loadPokemon(page) {
     });
 }
 
-function getLimit() {
-  const width = window.innerWidth;
-  if (width <= 480) return 3;
-  if (width <= 768) return 6;
-  if (width <= 1200) return 9;
-  return 12;
-}
-
 function displayPokemon(pokemons) {
   const container = document.getElementById('card-container');
   container.innerHTML = '';
   const promises = pokemons.map(pokemon => {
-    const typePromises = pokemon.types.map(typeInfo => fetch(typeInfo.type.url).then(res => res.json())); // Endpoint 3: Obtener informacion sobre un tipo de Pokemon
+    const typePromises = pokemon.types.map(typeInfo => fetch(typeInfo.type.url).then(res => res.json())); // Obtener información sobre un tipo de Pokémon
     return Promise.all(typePromises).then(types => {
       const typeElements = types.map(type => {
         const typeName = type.name;
@@ -70,12 +58,12 @@ function displayPokemon(pokemons) {
     });
   });
 
-  Promise.all(promises).then(cards => { // Mostrar las tarjetas de los Pokemon
+  Promise.all(promises).then(cards => { // Mostrar las tarjetas de los Pokémon
     container.innerHTML = cards.join('');
   });
 }
 
-function showPokemonDetails(pokemonId) { // Mostrar los detalles de un Pokemon en una tarjeta desplegable
+function showPokemonDetails(pokemonId) { // Mostrar los detalles de un Pokémon en una tarjeta desplegable
   fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
     .then(response => response.json())
     .then(pokemon => {
@@ -117,7 +105,7 @@ function formatNumber(number) {
   return number.toString().padStart(4, '0');
 }
 
-function getTypeColor(type) { // Colores de los tipos de Pokemon
+function getTypeColor(type) { // Colores de los tipos de Pokémon
   const typeColors = {
     grass: '#83D66A',
     fire: '#FB8917',
@@ -141,22 +129,10 @@ function getTypeColor(type) { // Colores de los tipos de Pokemon
   return typeColors[type] || '#000000';
 }
 
-function nextPage() {
-  currentPage++;
-  loadPokemon(currentPage);
-}
-
-function prevPage() {
-  if (currentPage > 1) {
-    currentPage--;
-    loadPokemon(currentPage);
-  }
-}
-
-function searchPokemon() { // Buscar un Pokemon en especifico
+function searchPokemon() { // Buscar un Pokémon en específico
   const searchInput = document.getElementById('search').value.trim().toLowerCase();
   if (!searchInput) {
-    loadPokemon(currentPage); // Si el campo de busqueda esta vacio mostrar todos los Pokemon
+    loadAllPokemon(); // Si el campo de búsqueda está vacío mostrar todos los Pokémon
     return;
   }
 
@@ -165,6 +141,6 @@ function searchPokemon() { // Buscar un Pokemon en especifico
       if (!response.ok) throw new Error('No encontrado');
       return response.json();
     })
-    .then(pokemon => displayPokemon([pokemon])) // Mostrar solo el Pokemon buscado
+    .then(pokemon => displayPokemon([pokemon])) // Mostrar solo el Pokémon buscado
     .catch(() => alert('Pokémon no encontrado. Intenta con otro nombre o número.'));
 }
