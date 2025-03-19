@@ -136,11 +136,30 @@ function searchPokemon() { // Buscar un Pokémon en específico
     return;
   }
 
-  fetch(`https://pokeapi.co/api/v2/pokemon/${searchInput}`)
+  const types = [
+    "grass", "fire", "water", "bug", "normal", "poison", "electric", "ground",
+    "fairy", "fighting", "psychic", "rock", "ghost", "ice", "dragon",
+    "dark", "steel", "flying"
+  ];
+
+  if (types.includes(searchInput)) {
+    // Buscar por tipo si coincide con la lista
+    fetch(`https://pokeapi.co/api/v2/type/${searchInput}`)
+      .then(response => response.json())
+      .then(data => {
+        const pokemonPromises = data.pokemon.slice(0, 50).map(p => fetch(p.pokemon.url).then(res => res.json()));
+        Promise.all(pokemonPromises).then(pokemons => {
+          displayPokemon(pokemons);
+        });
+      })
+      .catch(() => alert('Error al buscar por tipo.'));
+  } else {
+    fetch(`https://pokeapi.co/api/v2/pokemon/${searchInput}`)
     .then(response => {
       if (!response.ok) throw new Error('No encontrado');
       return response.json();
     })
     .then(pokemon => displayPokemon([pokemon])) // Mostrar solo el Pokémon buscado
     .catch(() => alert('Pokémon no encontrado. Intenta con otro nombre o número.'));
+  }
 }
