@@ -47,7 +47,7 @@ function displayPokemon(pokemons) {
       }).join(' ');
       const card = `
         <div class="card" onclick="showPokemonDetails(${pokemon.id})">
-          <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+          <img src="${pokemon.sprites.other["showdown"].front_default}" alt="${pokemon.name}">
           <p>#${formatNumber(pokemon.id)}</p>
           <p>${capitalizeFirstLetter(pokemon.name)}</p>
           <p>Weight: ${pokemon.weight / 10} kg</p> <!-- Convertir el peso a kilogramos -->
@@ -85,7 +85,7 @@ function showPokemonDetails(pokemonId) { // Mostrar los detalles de un Pokémon 
         <p>Abilities: ${abilities}</p>
         <p>Type: ${types}</p>
       `;
-      document.getElementById('pokemonImage').src = pokemon.sprites.front_default;
+      document.getElementById('pokemonImage').src = pokemon.sprites.other["showdown"].front_default;
       document.getElementById('pokemonInfo').innerHTML = details;
 
       // Obtener los colores de los tipos para la franja de la tarjeta
