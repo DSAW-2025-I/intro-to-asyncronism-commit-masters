@@ -2,7 +2,12 @@
 # Desarrollo de Aplicaciones Web
 ## Introducción al Asíncronismo
 
+### LINK
+https://dsaw-2025-i.github.io/intro-to-asyncronism-commit-masters/
 
+**Nombres**
+Juan Felipe Cardenas Gonzalez - 322206
+Martin Ignacio Pereira Alcalde - 320193
 ## Funcionalidades
 
 - Crear una aplicación web que se comunique con la API propuesta: https://pokeapi.co/
