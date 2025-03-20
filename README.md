@@ -1,7 +1,13 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/6QZJ74rp)
 # Desarrollo de Aplicaciones Web
 ## Introducción al Asíncronismo
 
+### LINK
+https://dsaw-2025-i.github.io/intro-to-asyncronism-commit-masters/
 
+**Nombres**
+Juan Felipe Cardenas Gonzalez - 322206
+Martin Ignacio Pereira Alcalde - 320193
 ## Funcionalidades
 
 - Crear una aplicación web que se comunique con la API propuesta: https://pokeapi.co/
