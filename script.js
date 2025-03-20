@@ -1,33 +1,32 @@
-let currentPage = 1; // Pagina actual
-const limit = 12; // Limite de Pokemon por pagina
-
-document.addEventListener('DOMContentLoaded', () => { // Cargar la lista de Pokemon al cargar la pagina
-  loadPokemon(currentPage);
+document.addEventListener('DOMContentLoaded', () => {
+  loadAllPokemon();
   document.getElementById('searchButton').addEventListener('click', searchPokemon);
   document.getElementById('search').addEventListener('keypress', function (e) {
     if (e.key === 'Enter') searchPokemon();
   });
 
+  // Obtener el modal
   const modal = document.getElementById('pokemonModal');
   const span = document.getElementsByClassName('close')[0];
 
-  span.onclick = function() { // Cerrar la tarjeta al hacer click en la X
+  // Cuando el usuario hace clic en <span> (x), cerrar el modal
+  span.onclick = function() {
     modal.style.display = 'none';
   }
 
-  window.onclick = function(event) { // Cerrar la tarjeta al hacer click fuera de ella
+  // Cuando el usuario hace clic en cualquier lugar fuera del modal, cerrarlo
+  window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = 'none';
     }
   }
 });
 
-function loadPokemon(page) {
-  const offset = (page - 1) * limit;
-  fetch(`https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`) // Endpoint 1: Obtener la lista de Pokemon
+function loadAllPokemon() {
+  fetch(`https://pokeapi.co/api/v2/pokemon?limit=1000`) // Obtener todos los Pokémon (ajusta el límite según sea necesario)
     .then(response => response.json())
     .then(data => {
-      const promises = data.results.map(pokemon => fetch(pokemon.url).then(res => res.json())); // Endpoint 2: Obtener detalles de un Pokemon en especifico
+      const promises = data.results.map(pokemon => fetch(pokemon.url).then(res => res.json())); // Obtener detalles de cada Pokémon
       Promise.all(promises).then(results => {
         results.sort((a, b) => a.id - b.id); // Ordenar los resultados por ID
         displayPokemon(results);
@@ -35,11 +34,11 @@ function loadPokemon(page) {
     });
 }
 
-function displayPokemon(pokemons) { // Mostrar los Pokemon en la pagina
+function displayPokemon(pokemons) {
   const container = document.getElementById('card-container');
   container.innerHTML = '';
   const promises = pokemons.map(pokemon => {
-    const typePromises = pokemon.types.map(typeInfo => fetch(typeInfo.type.url).then(res => res.json())); // Endpoint 3: Obtener informacion sobre un tipo de Pokemon
+    const typePromises = pokemon.types.map(typeInfo => fetch(typeInfo.type.url).then(res => res.json())); // Obtener información sobre un tipo de Pokémon
     return Promise.all(typePromises).then(types => {
       const typeElements = types.map(type => {
         const typeName = type.name;
@@ -48,7 +47,7 @@ function displayPokemon(pokemons) { // Mostrar los Pokemon en la pagina
       }).join(' ');
       const card = `
         <div class="card" onclick="showPokemonDetails(${pokemon.id})">
-          <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+          <img src="${pokemon.sprites.other["showdown"].front_default}" alt="${pokemon.name}">
           <p>#${formatNumber(pokemon.id)}</p>
           <p>${capitalizeFirstLetter(pokemon.name)}</p>
           <p>Weight: ${pokemon.weight / 10} kg</p> <!-- Convertir el peso a kilogramos -->
@@ -59,12 +58,12 @@ function displayPokemon(pokemons) { // Mostrar los Pokemon en la pagina
     });
   });
 
-  Promise.all(promises).then(cards => { // Mostrar las tarjetas de los Pokemon
+  Promise.all(promises).then(cards => { // Mostrar las tarjetas de los Pokémon
     container.innerHTML = cards.join('');
   });
 }
 
-function showPokemonDetails(pokemonId) { // Mostrar los detalles de un Pokemon en una tarjeta desplegable
+function showPokemonDetails(pokemonId) { // Mostrar los detalles de un Pokémon en una tarjeta desplegable
   fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`)
     .then(response => response.json())
     .then(pokemon => {
@@ -86,7 +85,7 @@ function showPokemonDetails(pokemonId) { // Mostrar los detalles de un Pokemon e
         <p>Abilities: ${abilities}</p>
         <p>Type: ${types}</p>
       `;
-      document.getElementById('pokemonImage').src = pokemon.sprites.front_default;
+      document.getElementById('pokemonImage').src = pokemon.sprites.other["showdown"].front_default;
       document.getElementById('pokemonInfo').innerHTML = details;
 
       // Obtener los colores de los tipos para la franja de la tarjeta
@@ -106,7 +105,7 @@ function formatNumber(number) {
   return number.toString().padStart(4, '0');
 }
 
-function getTypeColor(type) { // Colores de los tipos de Pokemon
+function getTypeColor(type) { // Colores de los tipos de Pokémon
   const typeColors = {
     grass: '#83D66A',
     fire: '#FB8917',
@@ -130,30 +129,37 @@ function getTypeColor(type) { // Colores de los tipos de Pokemon
   return typeColors[type] || '#000000';
 }
 
-function nextPage() {
-  currentPage++;
-  loadPokemon(currentPage);
-}
-
-function prevPage() {
-  if (currentPage > 1) {
-    currentPage--;
-    loadPokemon(currentPage);
-  }
-}
-
-function searchPokemon() { // Buscar un Pokemon en especifico
+function searchPokemon() { // Buscar un Pokémon en específico
   const searchInput = document.getElementById('search').value.trim().toLowerCase();
   if (!searchInput) {
-    loadPokemon(currentPage); // Si el campo de busqueda esta vacio mostrar todos los Pokemon
+    loadAllPokemon(); // Si el campo de búsqueda está vacío mostrar todos los Pokémon
     return;
   }
 
-  fetch(`https://pokeapi.co/api/v2/pokemon/${searchInput}`)
+  const types = [
+    "grass", "fire", "water", "bug", "normal", "poison", "electric", "ground",
+    "fairy", "fighting", "psychic", "rock", "ghost", "ice", "dragon",
+    "dark", "steel", "flying"
+  ];
+
+  if (types.includes(searchInput)) {
+    // Buscar por tipo si coincide con la lista
+    fetch(`https://pokeapi.co/api/v2/type/${searchInput}`)
+      .then(response => response.json())
+      .then(data => {
+        const pokemonPromises = data.pokemon.slice(0, 50).map(p => fetch(p.pokemon.url).then(res => res.json()));
+        Promise.all(pokemonPromises).then(pokemons => {
+          displayPokemon(pokemons);
+        });
+      })
+      .catch(() => alert('Error al buscar por tipo.'));
+  } else {
+    fetch(`https://pokeapi.co/api/v2/pokemon/${searchInput}`)
     .then(response => {
       if (!response.ok) throw new Error('No encontrado');
       return response.json();
     })
-    .then(pokemon => displayPokemon([pokemon])) // Mostrar solo el Pokemon buscado
+    .then(pokemon => displayPokemon([pokemon])) // Mostrar solo el Pokémon buscado
     .catch(() => alert('Pokémon no encontrado. Intenta con otro nombre o número.'));
+  }
 }
