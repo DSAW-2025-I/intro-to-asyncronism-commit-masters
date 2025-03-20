@@ -5,9 +5,9 @@
 </head>
 <header>
   <span class="logo">
-    <img src="images/logo.png" alt="logo">
-    <div class="search-container">
-      <input type="text" id="search" placeholder="Buscar Nombre o Número">
+    <img src="images/logo.png" alt="logo"> <!-- Logo de Pokemon -->
+    <div class="search-container"> <!-- Seccion para buscar a un pokemon -->
+      <input type="text" id="search" placeholder="Buscar Nombre, ID o tipo"> 
       <button type="submit" id="searchButton"></button>
     </div>
   </span>
@@ -15,11 +15,22 @@
 <body>
   <div class="main-container">
     <div class="card-container" id="card-container">
-      <!-- Las tarjetas se generan aquí -->
+      <!-- Aca se generan todas las tarjetas de los pokemon -->
     </div>
-    <div class="pagination">
-      <button id="prevButton" onclick="prevPage()">Anterior</button>
-      <button id="nextButton" onclick="nextPage()">Siguiente</button>
+    <div class="pagination"> <!-- Botones para cambiar de pagina -->
+      <button id="prevPage" disabled>Anterior</button>
+      <button id="nextPage">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- Tarjeta de informacion detallada del Pokemon -->
+  <div id="pokemonModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <div id="pokemonDetails" class="pokemon-details">
+        <img id="pokemonImage" src="" alt="Pokemon Image">
+        <div id="pokemonInfo"></div>
+      </div>
     </div>
   </div>
 
